@@ -23,10 +23,10 @@ class MainViewModel(repository: MainRepository) : ViewModel() {
     init {
         viewModelScope.launch {
             _doors.value = Resource.Loading
-            _doors.value = repository.getDoors()
+            _doors.value = repository.getDoorsFromRemote()
 
             _cameras.value = Resource.Loading
-            _cameras.value = repository.getCameras()
+            _cameras.value = repository.getCamerasFromRemote()
         }
     }
 }
