@@ -1,7 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization' version "1.5.0"
+    id 'org.jetbrains.kotlin.kapt'
 }
+
+apply plugin: "realm-android"
 
 android {
     namespace 'com.abg.testapp'
@@ -47,6 +51,35 @@ android {
 }
 
 dependencies {
+
+    def lifecycle_version = "2.6.1"
+    def ktor_version = "1.5.0"
+
+    //kotlinx serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    //glide
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.5")
+
+    //ktor
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
+
+    //realm
+    implementation("io.realm.kotlin:library-base:1.10.0")
+
+    //coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-pager:0.14.0") // Pager
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.14.0") // Pager Indicators
+
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
