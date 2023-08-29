@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Door : RealmObject() {
+open class Door : RealmObject() {
     @PrimaryKey
     @SerialName("id")
     var id: Int = 0

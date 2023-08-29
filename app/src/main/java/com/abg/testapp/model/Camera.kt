@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Camera: RealmObject() {
+open class Camera: RealmObject() {
     @PrimaryKey
     @SerialName("id")
     var id: Int = 0
