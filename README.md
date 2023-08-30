@@ -27,6 +27,11 @@ Stack:
 
   ## result
 
+Tested on devices: 
+- 3.7 FWVGA slider API 26
+- Galaxy Nexus API 33
+- Galaxy A13 API 33
+    
   <table style="padding:10px">
   <tr>
     <td><img src="https://github.com/vadhub/TestApp/blob/master/shimmer.png?raw=true" alt="1" width = 500></td>
