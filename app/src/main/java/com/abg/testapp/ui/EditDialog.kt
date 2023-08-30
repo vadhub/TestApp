@@ -31,20 +31,20 @@ fun Dialog(openDialog: MutableState<Boolean>, onConfirm: (String) -> Unit, text:
 
     if (openDialog.value) {
         AlertDialog(
-            modifier = Modifier.size(200.dp, 300.dp),
+            modifier = Modifier.size(200.dp, 250.dp),
             textContentColor = Color.Black,
             onDismissRequest = {
                 openDialog.value = false
             },
             title = {
-                Text(text = stringResource(id = R.string.rename))
+                Text(text = stringResource(id = R.string.rename), fontSize = 16.sp)
             },
             text = {
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Black),
                     value = textState.value,
                     onValueChange = { textState.value = it },
-                    textStyle = TextStyle(fontSize = 30.sp)
+                    textStyle = TextStyle(fontSize = 14.sp)
                 )
             },
             confirmButton = {

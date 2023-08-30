@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
@@ -40,25 +41,24 @@ import de.charlex.compose.RevealSwipe
 @Composable
 fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
 
-    //use default icons
-    val drawableStar = if (camera.favorites) R.drawable.star else R.drawable.star_2
-
     //RevealSwipe imported from dependency
     RevealSwipe(
-        maxRevealDp = 50.dp,
+        maxRevealDp = 60.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
 
             // button for choose favorite
-            IconButton(onClick = { onClickFavorite.invoke(camera.id) }) {
+            IconButton(
+                modifier = Modifier
+                    .padding(horizontal = 15.dp)
+                    .border(width = 0.5.dp, color = BeigeDark, shape = CircleShape),
+                onClick = { onClickFavorite.invoke(camera.id) }) {
                 Icon(
                     modifier = Modifier
-                        .padding(horizontal = 15.dp)
-                        .size(30.dp)
-                        .border(width = 0.5.dp, color = BeigeDark, shape = RoundedCornerShape(20.dp)),
-                    painter = painterResource(id = drawableStar),
+                        .size(30.dp),
+                    painter = painterResource(id = R.drawable.star_2),
                     contentDescription = "favorite",
                     tint = Yellow
                 )
@@ -76,7 +76,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(8.dp,4.dp),
                 shape = RoundedCornerShape(8.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
