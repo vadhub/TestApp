@@ -2,14 +2,12 @@ package com.abg.testapp.ui.doors
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import com.abg.testapp.MainViewModel
+import androidx.compose.runtime.State
 import com.abg.testapp.data.Resource
+import com.abg.testapp.model.Door
 
 @Composable
-fun DoorsScreen(viewModel: MainViewModel) {
-
-    val doors = viewModel.doors.collectAsState()
+fun DoorsScreen(doors: State<Resource<List<Door>?>?>, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door) -> Unit) {
 
     doors.value?.let {
         when (it) {
@@ -22,9 +20,10 @@ fun DoorsScreen(viewModel: MainViewModel) {
             }
 
             is Resource.Success -> {
+
                 Column {
                     if (it.result != null) {
-                        DoorsList(doors = it.result)
+                        DoorsList(doors = it.result, onClickFavorite, onClickRenamed)
                     }
                 }
             }

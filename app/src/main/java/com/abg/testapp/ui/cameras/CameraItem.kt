@@ -1,4 +1,4 @@
-package com.abg.testapp.ui.doors
+package com.abg.testapp.ui.cameras
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abg.testapp.R
-import com.abg.testapp.model.Door
+import com.abg.testapp.model.Camera
 import com.abg.testapp.ui.theme.Beige
 import com.abg.testapp.ui.theme.BeigeDark
 import com.abg.testapp.ui.theme.Blue
@@ -38,15 +38,15 @@ import de.charlex.compose.RevealSwipe
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door) -> Unit) {
+fun CameraItem(camera: Camera, onClickFavorite: (Camera) -> Unit, onClickRenamed: (Camera) -> Unit) {
+
     RevealSwipe(
         maxRevealDp = 100.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
-            IconButton(onClick = { onClickRenamed.invoke(door) }) {
-
+            IconButton(onClick = { onClickRenamed.invoke(camera) }) {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
@@ -60,17 +60,12 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                     tint = Blue
                 )
             }
-
-            IconButton(onClick = { onClickFavorite.invoke(door) }) {
+            IconButton(onClick = { onClickFavorite.invoke(camera) }) {
                 Icon(
                     modifier = Modifier
                         .padding(horizontal = 15.dp)
                         .size(30.dp)
-                        .border(
-                            width = 0.5.dp,
-                            color = BeigeDark,
-                            shape = RoundedCornerShape(20.dp)
-                        ),
+                        .border(width = 0.5.dp, color = BeigeDark, shape = RoundedCornerShape(20.dp)),
                     painter = painterResource(id = R.drawable.baseline_star_border_24),
                     contentDescription = "",
                     tint = Yellow
@@ -78,29 +73,29 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
             }
         }
     ) {
-        Box(
-            Modifier
-                .fillMaxWidth()
-        ) {
+
+        Box {
 
             Card(
-
                 colors = CardDefaults.cardColors(
                     contentColor = Color.Black,
                     containerColor = Color.White
                 ),
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp),
                 shape = RoundedCornerShape(8.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
+
                 Column {
-                    if (door.snapshot != "") {
+
+                    if (camera.snapshot != "") {
                         Box(modifier = Modifier.height(200.dp)) {
 
                             GlideImage(
-                                model = door.snapshot,
-                                contentDescription = "camera ${door.name}",
+                                model = camera.snapshot,
+                                contentDescription = "camera ${camera.name}",
                                 contentScale = ContentScale.Crop
                             )
 
@@ -113,25 +108,50 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                             )
                         }
                     }
-                    Row(modifier = Modifier.padding(16.dp)) {
-                        Column {
-                            Text(text = door.name, fontSize = 16.sp)
-                            if (door.snapshot != "") {
-                                Text(text = "V seti", fontSize = 14.sp, color = Color.Gray)
-                            }
-                        }
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = camera.name, fontSize = 16.sp)
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            Image(
-                                painter = painterResource(id = if (door.favorites) R.drawable.baseline_lock_open_24 else R.drawable.baseline_lock_24),
-                                contentDescription = "",
-                            )
+                        if (camera.favorites) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_shield_24),
+                                    contentDescription = "",
+                                )
+                            }
                         }
                     }
 
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.baseline_videocam_24
+                    ),
+                    contentDescription = "",
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = if (camera.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+                        ),
+                        contentDescription = "",
+                    )
                 }
             }
         }
