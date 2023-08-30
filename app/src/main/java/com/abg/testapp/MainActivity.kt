@@ -44,10 +44,6 @@ class MainActivity : ComponentActivity() {
         val favoriteCamera: (Int) -> Unit = {
             viewModel.insertFavoriteCamera(it)
         }
-        //insert to database renamed camera object
-        val editCamera: (Int, String) -> Unit = { id, newName ->
-            viewModel.insertRenamedCamera(id, newName)
-        }
 
         //insert to database favorite door object
         val favoriteDoor: (Int) -> Unit = {
@@ -75,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     TopBar()
                     TabLayout(
                         { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor, onRefreshDoor) },
-                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera, onRefreshCamera)})
+                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, onRefreshCamera)})
                 }
             }
         }

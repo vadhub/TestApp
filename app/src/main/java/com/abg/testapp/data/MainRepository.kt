@@ -162,18 +162,4 @@ class MainRepository(
             }
         }
     }
-
-    /**
-     * insert renamed Camera
-     * @param [id] is renamed camera
-     * @param [newName] is new name camera
-     * */
-    suspend fun insertOrUpdateRenamedCamera(id: Int, newName: String) {
-        realm.write {
-            val cam = this.query<Camera>("id == $0", id).first().find()
-            if (cam != null) {
-                cam.name = newName
-            }
-        }
-    }
 }

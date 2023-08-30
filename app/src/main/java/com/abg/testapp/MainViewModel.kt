@@ -101,15 +101,6 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     /**
-     * insert renamed camera
-     * @param id is id camera
-     * @param newName is new name camera
-     * */
-    fun insertRenamedCamera(id: Int, newName: String) = viewModelScope.launch {
-        repository.insertOrUpdateRenamedCamera(id, newName)
-    }
-
-    /**
      * forced refresh camera
      * */
     fun refreshCameras() = viewModelScope.launch(Dispatchers.IO) {
