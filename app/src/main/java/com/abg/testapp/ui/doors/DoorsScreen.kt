@@ -3,6 +3,7 @@ package com.abg.testapp.ui.doors
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.abg.testapp.data.Resource
 import com.abg.testapp.model.Door
+import com.abg.testapp.ui.ShimmerListItem
 import com.abg.testapp.ui.theme.Beige
 
 
@@ -35,6 +37,11 @@ fun DoorsScreen(
             }
 
             Resource.Loading -> {
+                LazyColumn {
+                    items(10) {
+                        ShimmerListItem()
+                    }
+                }
                 Toast.makeText(LocalContext.current, "Loading", Toast.LENGTH_SHORT).show()
             }
 
