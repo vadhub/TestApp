@@ -18,6 +18,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abg.testapp.R
 import com.abg.testapp.model.Door
+import com.abg.testapp.ui.Dialog
 import com.abg.testapp.ui.theme.Beige
 import com.abg.testapp.ui.theme.BeigeDark
 import com.abg.testapp.ui.theme.Blue
@@ -38,15 +41,29 @@ import de.charlex.compose.RevealSwipe
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door) -> Unit) {
+fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
+
+    val showDialog = remember { mutableStateOf(false) }
+
+    val drawableStar = if (door.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+
+    // EditDialog class wrapper over AlertDialog
+    Dialog(openDialog = showDialog, onConfirm = {
+        onClickRenamed.invoke(door.id, it)
+    }, text = door.name)
+
+    //RevealSwipe imported from dependency
     RevealSwipe(
         maxRevealDp = 100.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
-            IconButton(onClick = { onClickRenamed.invoke(door) }) {
 
+            // button for edit door name
+            IconButton(onClick = {
+                showDialog.value = true
+            }) {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
@@ -61,7 +78,8 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                 )
             }
 
-            IconButton(onClick = { onClickFavorite.invoke(door) }) {
+            // button for choose favorite
+            IconButton(onClick = { onClickFavorite.invoke(door.id) }) {
                 Icon(
                     modifier = Modifier
                         .padding(horizontal = 15.dp)
@@ -71,20 +89,20 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                             color = BeigeDark,
                             shape = RoundedCornerShape(20.dp)
                         ),
-                    painter = painterResource(id = R.drawable.baseline_star_border_24),
+                    painter = painterResource(id = drawableStar),
                     contentDescription = "",
                     tint = Yellow
                 )
             }
         }
     ) {
+
+        // box show card with text and image
         Box(
             Modifier
                 .fillMaxWidth()
         ) {
-
             Card(
-
                 colors = CardDefaults.cardColors(
                     contentColor = Color.Black,
                     containerColor = Color.White
@@ -94,10 +112,13 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                 shape = RoundedCornerShape(8.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
+
+                // Column show image with icon player
                 Column {
                     if (door.snapshot != "") {
                         Box(modifier = Modifier.height(200.dp)) {
 
+                            //Glide from dependencies
                             GlideImage(
                                 model = door.snapshot,
                                 contentDescription = "camera ${door.name}",
@@ -113,6 +134,8 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                             )
                         }
                     }
+
+                    // bottom text: name camera and below "is online" if image exist
                     Row(modifier = Modifier.padding(16.dp)) {
                         Column {
                             Text(text = door.name, fontSize = 16.sp)
@@ -121,6 +144,7 @@ fun DoorItem(door: Door, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door)
                             }
                         }
 
+                        // row show icon open/close lock depending on favorite or not
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.End

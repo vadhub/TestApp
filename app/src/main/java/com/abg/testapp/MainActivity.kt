@@ -18,8 +18,6 @@ import androidx.compose.ui.unit.sp
 import com.abg.testapp.data.DatabaseInstance
 import com.abg.testapp.data.MainRepository
 import com.abg.testapp.data.RemoteInstance
-import com.abg.testapp.model.Camera
-import com.abg.testapp.model.Door
 import com.abg.testapp.ui.TabLayout
 import com.abg.testapp.ui.cameras.CamerasScreen
 import com.abg.testapp.ui.doors.DoorsScreen
@@ -42,29 +40,38 @@ class MainActivity : ComponentActivity() {
         viewModel.getDoors()
         viewModel.getCameras()
 
-        val favoriteCamera: (Camera) -> Unit = {
+        val favoriteCamera: (Int) -> Unit = {
             viewModel.insertFavoriteCamera(it)
         }
 
-        val editCamera: (Camera) -> Unit = {
-            viewModel.insertFavoriteCamera(it)
+        val editCamera: (Int, String) -> Unit = { id, newName ->
+            viewModel.insertRenamedCamera(id, newName)
         }
 
-        val favoriteDoor: (Door) -> Unit = {
+        val favoriteDoor: (Int) -> Unit = {
             viewModel.insertFavoriteDoor(it)
         }
 
-        val editDoor: (Door) -> Unit = {
-            viewModel.insertRenamedDoor(it)
+        val editDoor: (Int, String) -> Unit = { id, newName ->
+            viewModel.insertRenamedDoor(id, newName)
+        }
+
+        val onRefreshDoor: () -> Unit = {
+            viewModel.refreshDoors()
+        }
+
+        val onRefreshCamera: () -> Unit = {
+            viewModel.refreshCameras()
         }
 
         setContent {
             TestAppTheme {
+
                 Column(Modifier.background(Beige)) {
                     TopBar()
                     TabLayout(
-                        { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor) },
-                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera)})
+                        { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor, onRefreshDoor) },
+                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera, onRefreshCamera)})
                 }
             }
         }
