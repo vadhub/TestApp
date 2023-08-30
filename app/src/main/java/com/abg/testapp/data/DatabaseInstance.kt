@@ -1,17 +1,20 @@
 package com.abg.testapp.data
 
-import io.realm.Realm
-import io.realm.RealmConfiguration
+import com.abg.testapp.model.Camera
+import com.abg.testapp.model.Door
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 
 object DatabaseInstance {
-
-    private val version = 1L
-
-    fun realm(): Realm {
-        val config = RealmConfiguration.Builder()
+    fun provideRealm(): Realm {
+        val config = RealmConfiguration.Builder(
+            schema = setOf(
+                Door::class, Camera::class
+            )
+        )
             .name("app.db")
-            .schemaVersion(version)
+            .schemaVersion(1)
             .build()
-        return Realm.getInstance(config)
+        return Realm.open(config)
     }
 }
