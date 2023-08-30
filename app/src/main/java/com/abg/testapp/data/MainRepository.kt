@@ -1,5 +1,6 @@
 package com.abg.testapp.data
 
+import android.util.Log
 import com.abg.testapp.model.Camera
 import com.abg.testapp.model.DataDoor
 import com.abg.testapp.model.Door
@@ -7,10 +8,10 @@ import com.abg.testapp.model.Root
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.url
-import io.realm.Realm
-import io.realm.kotlin.executeTransactionAwait
-import kotlinx.coroutines.Dispatchers
-import java.lang.Exception
+import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.query
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 private const val BASE_URL = "http://cars.cprogroup.ru/api/rubetek"
 private const val GET_CAMERA = "$BASE_URL/cameras/"
@@ -18,8 +19,28 @@ private const val GET_DOOR = "$BASE_URL/doors/"
 
 class MainRepository(
     private val client: HttpClient,
-    private val database: Realm
+    private val realm: Realm
 ) {
+
+    fun checkIsEmptyDoorDB(): Boolean {
+        val list = realm.query<Door>().find()
+
+        if (list.isEmpty()) {
+            Log.d("empty", "eeee")
+            return true
+        }
+        return false
+    }
+
+    fun checkIsEmptyCameraDB(): Boolean {
+        val list = realm.query<Camera>().find()
+
+        if (list.isEmpty()) {
+            Log.d("empty", "eeee")
+            return true
+        }
+        return false
+    }
 
     suspend fun getDoorsFromRemote(): Resource<List<Door>?> {
         return try {
@@ -34,20 +55,34 @@ class MainRepository(
         }
     }
 
-    suspend fun getDoorsFromDB(): List<Door> {
-        val doors: MutableList<Door> = mutableListOf()
-        database.executeTransactionAwait(Dispatchers.IO) {
-            realm -> doors.addAll(realm.where(Door::class.java).findAll())
-        }
-        return doors
+    suspend fun getDoorsFromDB(): Flow<List<Door>> {
+        return realm.query<Door>().asFlow().map { it.list }
     }
 
     suspend fun insertAllDoors(doors: List<Door>) {
-        database.insert(doors)
+            if (doors.isNotEmpty()) {
+                Log.d("insert", doors.toTypedArray().contentToString())
+                doors.forEach { realm.write { this.copyToRealm(it) } }
+            }
+
     }
 
-    suspend fun insertOrUpdateDoor(door: Door) {
-        database.insertOrUpdate(door)
+    suspend fun insertOrUpdateFavoriteDoor(door: Door) {
+        realm.write {
+            val d = this.query<Door>("id == $0", door.id).first().find()
+            if (d != null) {
+                d.favorites= !d.favorites
+            }
+        }
+    }
+
+    suspend fun insertOrUpdateRenamedDoor(door: Door) {
+        realm.write {
+            val d = this.query<Camera>("id == $0", door.id).first().find()
+            if (d != null) {
+                d.name = door.name
+            }
+        }
     }
 
     suspend fun getCamerasFromRemote():Resource<List<Camera>?> {
@@ -63,19 +98,33 @@ class MainRepository(
         }
     }
 
-    suspend fun getCamerasFromDB(): List<Camera> {
-        val cameras: MutableList<Camera> = mutableListOf()
-        database.executeTransactionAwait(Dispatchers.IO) {
-                realm -> cameras.addAll(realm.where(Camera::class.java).findAll())
-        }
-        return cameras
+    suspend fun getCamerasFromDB(): Flow<List<Camera>> {
+        return realm.query<Camera>().asFlow().map { it.list }
     }
 
     suspend fun insertAllCameras(cameras: List<Camera>) {
-        database.insert(cameras)
+        if (cameras.isNotEmpty()) {
+            Log.d("insert", cameras.toTypedArray().contentToString())
+            cameras.forEach { realm.write { this.copyToRealm(it) } }
+        }
     }
 
-    suspend fun insertOrUpdateCamera(camera: Camera) {
-        database.insertOrUpdate(camera)
+    suspend fun insertOrUpdateFavoriteCamera(camera: Camera) {
+        Log.d("insert", camera.favorites.toString())
+        realm.write {
+            val cam = this.query<Camera>("id == $0", camera.id).first().find()
+            if (cam != null) {
+                cam.favorites= !cam.favorites
+            }
+        }
+    }
+
+    suspend fun insertOrUpdateRenamedCamera(camera: Camera) {
+        realm.write {
+            val cam = this.query<Camera>("id == $0", camera.id).first().find()
+            if (cam != null) {
+                cam.name = camera.name
+            }
+        }
     }
 }
