@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.abg.testapp.ui.theme.Beige
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -31,7 +32,7 @@ fun TabLayout(cameraScreen: @Composable () -> Unit, doorScreen: @Composable () -
                     Modifier.pagerTabIndicatorOffset(pagerState, pos)
                 )
             },
-            backgroundColor = Color.White,
+            backgroundColor = Beige,
             contentColor = Color.Blue
         ) {
 
