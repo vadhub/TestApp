@@ -148,12 +148,15 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.baseline_videocam_24
-                    ),
-                    contentDescription = "",
-                )
+
+                if (camera.rec) {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.baseline_videocam_24
+                        ),
+                        contentDescription = "",
+                    )
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
