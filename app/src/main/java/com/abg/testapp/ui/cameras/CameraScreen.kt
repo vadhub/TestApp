@@ -31,7 +31,6 @@ import com.abg.testapp.ui.theme.Beige
 fun CamerasScreen(
     cameras: State<Resource<List<Camera>?>?>,
     onClickFavorite: (Int) -> Unit,
-    onClickRenamed: (Int, String) -> Unit,
     onRefresh: () -> Unit
 ) {
 
@@ -58,7 +57,7 @@ fun CamerasScreen(
                 Box(Modifier.pullRefresh(pullRefreshState)) {
                     Column {
                         if (it.result != null) {
-                            CamerasList(cameras = it.result, onClickFavorite, onClickRenamed)
+                            CamerasList(cameras = it.result, onClickFavorite)
                         }
                     }
 

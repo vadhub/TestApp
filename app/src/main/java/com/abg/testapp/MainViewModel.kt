@@ -31,13 +31,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     fun getDoors() = viewModelScope.launch(Dispatchers.IO) {
         if (repository.checkIsEmptyDoorDB()) {
             _doors.value = Resource.Loading
-            _doors.value = repository.getDoorsFromRemote() // get data from remote server
-            Log.d("#connect", "getDoors")
-            _doors.collectLatest { list ->
-                if (list is Resource.Success) {
-                    list.result?.let { repository.insertAllDoors(it) } // insert to DB all list of Doors
-                }
+            repository.getDoorsFromRemote() // get data from remote server
+            repository.getDoorsFromDB().collectLatest {
+                _doors.value = Resource.Success(it)
             }
+            Log.d("#connect", "getDoors")
         } else {
             Log.d("#db", "getDoors")
             _doors.value = Resource.Loading
@@ -51,8 +49,12 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
      * forced refresh doors
      * */
     fun refreshDoors() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteDoorsAll()
         _doors.value = Resource.Loading
-        _doors.value = repository.getDoorsFromRemote()
+        repository.getDoorsFromRemote()
+        repository.getDoorsFromDB().collectLatest {
+            _doors.value = Resource.Success(it)
+        }
     }
 
     /** insert favorite id door in DB
@@ -76,13 +78,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     fun getCameras() = viewModelScope.launch(Dispatchers.IO) {
         if (repository.checkIsEmptyCameraDB()) {
             _cameras.value = Resource.Loading
-            _cameras.value = repository.getCamerasFromRemote()
-            Log.d("#connect", "getCameras")
-            _cameras.collectLatest { list ->
-                if (list is Resource.Success) {
-                    list.result?.let { repository.insertAllCameras(it) }
-                }
+            repository.getCamerasFromRemote()
+            repository.getCamerasFromDB().collectLatest {
+                _cameras.value = Resource.Success(it)
             }
+            Log.d("#connect", "getCameras")
         } else {
             Log.d("#db", "getCameras")
             _cameras.value = Resource.Loading
@@ -101,20 +101,16 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     /**
-     * insert renamed camera
-     * @param id is id camera
-     * @param newName is new name camera
-     * */
-    fun insertRenamedCamera(id: Int, newName: String) = viewModelScope.launch {
-        repository.insertOrUpdateRenamedCamera(id, newName)
-    }
-
-    /**
      * forced refresh camera
      * */
     fun refreshCameras() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteCamerasAll()
         _cameras.value = Resource.Loading
-        _cameras.value = repository.getCamerasFromRemote()
+        repository.getCamerasFromRemote()
+
+        repository.getCamerasFromDB().collectLatest {
+            _cameras.value = Resource.Success(it)
+        }
     }
 
 }

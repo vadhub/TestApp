@@ -15,7 +15,7 @@ import com.abg.testapp.ui.theme.Beige
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CamerasList(cameras: List<Camera>, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
+fun CamerasList(cameras: List<Camera>, onClickFavorite: (Int) -> Unit) {
 
     val grouped = cameras.groupBy { it.room ?: "" }
 
@@ -28,7 +28,7 @@ fun CamerasList(cameras: List<Camera>, onClickFavorite: (Int) -> Unit, onClickRe
 
             }
             items(cameras.size) {
-                CameraItem(cameras[it], onClickFavorite, onClickRenamed)
+                CameraItem(cameras[it], onClickFavorite)
             }
         }
     }

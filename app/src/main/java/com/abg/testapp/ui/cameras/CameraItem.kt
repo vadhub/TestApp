@@ -42,40 +42,18 @@ import de.charlex.compose.RevealSwipe
 // I think it's not very good to write everything in one function, but it's faster
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
-
-    val showDialog = remember { mutableStateOf(false) }
+fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
 
     //use default icons
     val drawableStar = if (camera.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
 
-    Dialog(openDialog = showDialog, onConfirm = {
-        onClickRenamed.invoke(camera.id, it)
-    }, text = camera.name)
-
     //RevealSwipe imported from dependency
     RevealSwipe(
-        maxRevealDp = 100.dp,
+        maxRevealDp = 50.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
-
-            // button for edit camera name
-            IconButton(onClick = { showDialog.value = true }) {
-                Icon(
-                    modifier = Modifier
-                        .size(30.dp)
-                        .border(
-                            width = 0.5.dp,
-                            color = BeigeDark,
-                            shape = RoundedCornerShape(20.dp)
-                        ),
-                    painter = painterResource(id = R.drawable.baseline_edit_24),
-                    contentDescription = "edit",
-                    tint = Blue
-                )
-            }
 
             // button for choose favorite
             IconButton(onClick = { onClickFavorite.invoke(camera.id) }) {

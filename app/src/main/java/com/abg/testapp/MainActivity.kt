@@ -37,16 +37,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getDoors()
-        viewModel.getCameras()
 
         //insert to database favorite camera object
         val favoriteCamera: (Int) -> Unit = {
             viewModel.insertFavoriteCamera(it)
-        }
-        //insert to database renamed camera object
-        val editCamera: (Int, String) -> Unit = { id, newName ->
-            viewModel.insertRenamedCamera(id, newName)
         }
 
         //insert to database favorite door object
@@ -75,10 +69,16 @@ class MainActivity : ComponentActivity() {
                     TopBar()
                     TabLayout(
                         { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor, onRefreshDoor) },
-                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera, onRefreshCamera)})
+                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, onRefreshCamera)})
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getDoors()
+        viewModel.getCameras()
     }
 }
 
