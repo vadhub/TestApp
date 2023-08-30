@@ -8,6 +8,7 @@ import com.abg.testapp.data.MainRepository
 import com.abg.testapp.data.Resource
 import com.abg.testapp.model.Camera
 import com.abg.testapp.model.Door
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,7 +26,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     /* if in (DB) database Door is empty then connect to remote server and save to DB
      * else get data from DB
      */
-    fun getDoors() = viewModelScope.launch {
+    fun getDoors() = viewModelScope.launch(Dispatchers.IO) {
         if (repository.checkIsEmptyDoorDB()) {
             _doors.value = Resource.Loading
             _doors.value = repository.getDoorsFromRemote() // get data from remote server
@@ -44,16 +45,21 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
+    fun refreshDoors() = viewModelScope.launch(Dispatchers.IO) {
+        _doors.value = Resource.Loading
+        _doors.value = repository.getDoorsFromRemote()
+    }
+
     // insert by id door
     fun insertFavoriteDoor(id: Int) = viewModelScope.launch {
         repository.insertOrUpdateFavoriteDoor(id)
     }
 
-    fun insertRenamedDoor(id: Int, newName: String) = viewModelScope.launch {
+    fun insertRenamedDoor(id: Int, newName: String) = viewModelScope.launch(Dispatchers.IO) {
         repository.insertOrUpdateRenamedDoor(id, newName)
     }
 
-    fun getCameras() = viewModelScope.launch {
+    fun getCameras() = viewModelScope.launch(Dispatchers.IO) {
         if (repository.checkIsEmptyCameraDB()) {
             _cameras.value = Resource.Loading
             _cameras.value = repository.getCamerasFromRemote()
@@ -78,6 +84,11 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     fun insertRenamedCamera(id: Int, newName: String) = viewModelScope.launch {
         repository.insertOrUpdateRenamedCamera(id, newName)
+    }
+
+    fun refreshCameras() = viewModelScope.launch(Dispatchers.IO) {
+        _cameras.value = Resource.Loading
+        _cameras.value = repository.getCamerasFromRemote()
     }
 
 }
