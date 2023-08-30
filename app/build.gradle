@@ -2,10 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version "1.5.0"
+    id 'io.realm.kotlin'
     id 'org.jetbrains.kotlin.kapt'
 }
-
-apply plugin: "realm-android"
 
 android {
     namespace 'com.abg.testapp'
@@ -61,6 +60,9 @@ dependencies {
 
     //glide
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.5")
+
+    //realm
+    implementation("io.realm.kotlin:library-base:1.10.0")
 
     //ktor
     implementation("io.ktor:ktor-client-android:$ktor_version")
