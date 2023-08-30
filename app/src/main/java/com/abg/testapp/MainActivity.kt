@@ -37,8 +37,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getDoors()
-        viewModel.getCameras()
 
         //insert to database favorite camera object
         val favoriteCamera: (Int) -> Unit = {
@@ -75,6 +73,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getDoors()
+        viewModel.getCameras()
     }
 }
 

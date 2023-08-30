@@ -58,16 +58,14 @@ class MainRepository(
     /** get request on remote server.
      * @return [com.abg.testapp.data.Resource]
      */
-    suspend fun getDoorsFromRemote(): Resource<List<Door>?> {
-        return try {
-            Resource.Success(
-                client.get<DataDoor>{
-                    url(GET_DOOR)
-                }.doors
-            )
+    suspend fun getDoorsFromRemote() {
+        try {
+            client.get<DataDoor> {
+                url(GET_DOOR)
+            }.doors?.let { insertAllDoors(it.toList()) }
         } catch (e: Exception) {
-            e.printStackTrace()
             Resource.Failure(e)
+            e.printStackTrace()
         }
     }
 
@@ -83,10 +81,10 @@ class MainRepository(
      * insert all Doors [com.abg.testapp.model.Door] to Database
      * */
     suspend fun insertAllDoors(doors: List<Door>) {
-            if (doors.isNotEmpty()) {
-                Log.d("insert", doors.toTypedArray().contentToString())
-                doors.forEach { realm.write { this.copyToRealm(it) } }
-            }
+        if (doors.isNotEmpty()) {
+            Log.d("insert", doors.toTypedArray().contentToString())
+            doors.forEach { realm.write { this.copyToRealm(it) } }
+        }
 
     }
 
@@ -98,7 +96,7 @@ class MainRepository(
         realm.write {
             val d = this.query<Door>("id == $0", id).first().find()
             if (d != null) {
-                d.favorites= !d.favorites
+                d.favorites = !d.favorites
             }
         }
     }
@@ -120,16 +118,16 @@ class MainRepository(
     /** get request on remote server.
      * @return [com.abg.testapp.data.Resource]
      */
-    suspend fun getCamerasFromRemote():Resource<List<Camera>?> {
-        return try {
+    suspend fun getCamerasFromRemote() {
+        try {
             Resource.Success(
-                client.get<Root>{
+                client.get<Root> {
                     url(GET_CAMERA)
                 }.data?.cameras
-            )
+            ).result?.let { insertAllCameras(it.toList()) }
         } catch (e: Exception) {
-            e.printStackTrace()
             Resource.Failure(e)
+            e.printStackTrace()
         }
     }
 
@@ -156,10 +154,24 @@ class MainRepository(
      * */
     suspend fun insertOrUpdateFavoriteCamera(id: Int) {
         realm.write {
-            val cam = this.query<Camera>("id == $0",id).first().find()
+            val cam = this.query<Camera>("id == $0", id).first().find()
             if (cam != null) {
-                cam.favorites= !cam.favorites
+                cam.favorites = !cam.favorites
             }
+        }
+    }
+
+    suspend fun deleteDoorsAll() {
+        realm.write {
+            val doors = this.query<Door>().find()
+            delete(doors)
+        }
+    }
+
+    suspend fun deleteCamerasAll() {
+        realm.write {
+            val cameras = this.query<Camera>().find()
+            delete(cameras)
         }
     }
 }
