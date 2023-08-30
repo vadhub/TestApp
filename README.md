@@ -31,7 +31,7 @@ Stack:
   <tr>
     <td><img src="https://github.com/vadhub/TestApp/blob/master/cameras.png?raw=true"  alt="1" width = 200px></td>
     <td><img src="https://github.com/vadhub/TestApp/blob/master/doors.png?raw=true" align="right" alt="2" width = 200px></td>
-    <td><img src="https://github.com/vadhub/TestApp/blob/master/redact_cam_2.png?raw=true" align="right" alt="2" width = 200></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/edit_cam.png?raw=true" align="right" alt="2" width = 200></td>
     <td><img src="https://github.com/vadhub/TestApp/blob/master/door_redact.png?raw=true" align="right" alt="2" width = 200></td>
   </tr>
 </table>
