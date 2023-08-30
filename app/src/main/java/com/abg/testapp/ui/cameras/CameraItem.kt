@@ -39,7 +39,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import de.charlex.compose.RevealDirection
 import de.charlex.compose.RevealSwipe
 
-
 // I think it's not very good to write everything in one function, but it's faster
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -73,7 +72,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                             shape = RoundedCornerShape(20.dp)
                         ),
                     painter = painterResource(id = R.drawable.baseline_edit_24),
-                    contentDescription = "",
+                    contentDescription = "edit",
                     tint = Blue
                 )
             }
@@ -86,7 +85,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                         .size(30.dp)
                         .border(width = 0.5.dp, color = BeigeDark, shape = RoundedCornerShape(20.dp)),
                     painter = painterResource(id = drawableStar),
-                    contentDescription = "",
+                    contentDescription = "favorite",
                     tint = Yellow
                 )
             }
@@ -121,7 +120,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
 
                             Image(
                                 painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
-                                contentDescription = "",
+                                contentDescription = "play",
                                 Modifier
                                     .size(50.dp)
                                     .align(Alignment.Center),
@@ -143,7 +142,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                             ) {
                                 Image(
                                     painter = painterResource(id = R.drawable.baseline_shield_24),
-                                    contentDescription = "",
+                                    contentDescription = "secure",
                                 )
                             }
                         }
@@ -165,7 +164,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                         painter = painterResource(
                             id = R.drawable.baseline_videocam_24
                         ),
-                        contentDescription = "",
+                        contentDescription = "rec",
                     )
                 }
                 Row(
@@ -176,7 +175,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                         painter = painterResource(
                             id = drawableStar
                         ),
-                        contentDescription = "",
+                        contentDescription = "favorite",
                     )
                 }
             }

@@ -40,22 +40,26 @@ class MainActivity : ComponentActivity() {
         viewModel.getDoors()
         viewModel.getCameras()
 
+        //insert to database favorite camera object
         val favoriteCamera: (Int) -> Unit = {
             viewModel.insertFavoriteCamera(it)
         }
-
+        //insert to database renamed camera object
         val editCamera: (Int, String) -> Unit = { id, newName ->
             viewModel.insertRenamedCamera(id, newName)
         }
 
+        //insert to database favorite door object
         val favoriteDoor: (Int) -> Unit = {
             viewModel.insertFavoriteDoor(it)
         }
 
+        //insert to database renamed door object
         val editDoor: (Int, String) -> Unit = { id, newName ->
             viewModel.insertRenamedDoor(id, newName)
         }
 
+        //pull refresh
         val onRefreshDoor: () -> Unit = {
             viewModel.refreshDoors()
         }
@@ -82,7 +86,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopBar() {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
+        title = { Text(text = stringResource(R.string.my_home), fontSize = 18.sp) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Beige)
     )
 }

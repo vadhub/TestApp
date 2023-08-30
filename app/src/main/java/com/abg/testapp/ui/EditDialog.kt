@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -19,9 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.abg.testapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +37,7 @@ fun Dialog(openDialog: MutableState<Boolean>, onConfirm: (String) -> Unit, text:
                 openDialog.value = false
             },
             title = {
-                Text(text = "Rename")
+                Text(text = stringResource(id = R.string.rename))
             },
             text = {
                 OutlinedTextField(
@@ -59,7 +60,7 @@ fun Dialog(openDialog: MutableState<Boolean>, onConfirm: (String) -> Unit, text:
                             onConfirm.invoke(textState.value)
                         }
                     ) {
-                        Text("Confirm")
+                        Text(text = stringResource(id = R.string.ok))
                     }
                 }
             }

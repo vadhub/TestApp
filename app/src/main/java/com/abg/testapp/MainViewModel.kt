@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-//ViewModel for handle result from repository
+/**ViewModel for handle result from repository
+ * @param repository is instance repository
+ * */
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     private val _doors = MutableStateFlow<Resource<List<Door>?>?>(null) // we can get null from response
@@ -23,7 +25,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     private val _cameras = MutableStateFlow<Resource<List<Camera>?>?>(null)
     val cameras: StateFlow<Resource<List<Camera>?>?> = _cameras
 
-    /* if in (DB) database Door is empty then connect to remote server and save to DB
+    /** if in (DB) database Door is empty then connect to remote server and save to DB
      * else get data from DB
      */
     fun getDoors() = viewModelScope.launch(Dispatchers.IO) {
@@ -45,20 +47,32 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
+    /**
+     * forced refresh doors
+     * */
     fun refreshDoors() = viewModelScope.launch(Dispatchers.IO) {
         _doors.value = Resource.Loading
         _doors.value = repository.getDoorsFromRemote()
     }
 
-    // insert by id door
+    /** insert favorite id door in DB
+     * @param id is id door*/
     fun insertFavoriteDoor(id: Int) = viewModelScope.launch {
         repository.insertOrUpdateFavoriteDoor(id)
     }
 
+    /**
+     * insert renamed door in DB
+     * @param id is id door
+     * @param newName is new name door
+     * */
     fun insertRenamedDoor(id: Int, newName: String) = viewModelScope.launch(Dispatchers.IO) {
         repository.insertOrUpdateRenamedDoor(id, newName)
     }
 
+    /** if in (DB) database Camera is empty then connect to remote server and save to DB
+     * else get data from DB
+     */
     fun getCameras() = viewModelScope.launch(Dispatchers.IO) {
         if (repository.checkIsEmptyCameraDB()) {
             _cameras.value = Resource.Loading
@@ -78,14 +92,26 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
+    /**
+     * insert favorite camera
+     * @param id is id camera
+     * */
     fun insertFavoriteCamera(id: Int) = viewModelScope.launch {
         repository.insertOrUpdateFavoriteCamera(id)
     }
 
+    /**
+     * insert renamed camera
+     * @param id is id camera
+     * @param newName is new name camera
+     * */
     fun insertRenamedCamera(id: Int, newName: String) = viewModelScope.launch {
         repository.insertOrUpdateRenamedCamera(id, newName)
     }
 
+    /**
+     * forced refresh camera
+     * */
     fun refreshCameras() = viewModelScope.launch(Dispatchers.IO) {
         _cameras.value = Resource.Loading
         _cameras.value = repository.getCamerasFromRemote()

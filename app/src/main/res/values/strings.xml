@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TestApp</string>
+    <string name="online">В сети</string>
+    <string name="rename">Переименовать</string>
+    <string name="ok">OK</string>
+    <string name="my_home">Мой дом</string>
+    <string-array name="tabs">
+        <item>Камеры</item>
+        <item>Двери</item>
+    </string-array>
 </resources>
