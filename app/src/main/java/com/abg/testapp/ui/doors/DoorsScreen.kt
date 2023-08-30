@@ -59,17 +59,3 @@ fun DoorsScreen(
     }
 
 }
-
-/* My attempt repeat lifecycle fragment
-@Composable
-fun onCreate(key1: Any?, lifecycleOwner: LifecycleOwner, eventO: () -> Unit) {
-
-    DisposableEffect(key1) {
-        val observer = LifecycleEventObserver { source, event ->  eventO.invoke()}
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-}*/

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abg.testapp.R
@@ -73,7 +74,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             shape = RoundedCornerShape(20.dp)
                         ),
                     painter = painterResource(id = R.drawable.baseline_edit_24),
-                    contentDescription = "",
+                    contentDescription = "edit",
                     tint = Blue
                 )
             }
@@ -90,7 +91,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             shape = RoundedCornerShape(20.dp)
                         ),
                     painter = painterResource(id = drawableStar),
-                    contentDescription = "",
+                    contentDescription = "favorite",
                     tint = Yellow
                 )
             }
@@ -127,7 +128,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
 
                             Image(
                                 painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
-                                contentDescription = "",
+                                contentDescription = "play",
                                 Modifier
                                     .size(50.dp)
                                     .align(Alignment.Center),
@@ -140,7 +141,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                         Column {
                             Text(text = door.name, fontSize = 16.sp)
                             if (door.snapshot != "") {
-                                Text(text = "V seti", fontSize = 14.sp, color = Color.Gray)
+                                Text(text = stringResource(id = R.string.online), fontSize = 14.sp, color = Color.Gray)
                             }
                         }
 
@@ -151,7 +152,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                         ) {
                             Image(
                                 painter = painterResource(id = if (door.favorites) R.drawable.baseline_lock_open_24 else R.drawable.baseline_lock_24),
-                                contentDescription = "",
+                                contentDescription = "lock",
                             )
                         }
                     }

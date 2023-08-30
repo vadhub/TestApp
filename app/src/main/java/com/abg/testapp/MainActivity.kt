@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopBar() {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
+        title = { Text(text = stringResource(R.string.my_home), fontSize = 18.sp) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Beige)
     )
 }
