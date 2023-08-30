@@ -46,7 +46,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
 
     val showDialog = remember { mutableStateOf(false) }
 
-    val drawableStar = if (door.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+    val drawableStar = if (door.favorites) R.drawable.star else R.drawable.star_2
 
     // EditDialog class wrapper over AlertDialog
     Dialog(openDialog = showDialog, onConfirm = {
@@ -56,7 +56,6 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
     //RevealSwipe imported from dependency
     RevealSwipe(
         maxRevealDp = 100.dp,
-        modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
@@ -71,9 +70,9 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                         .border(
                             width = 0.5.dp,
                             color = BeigeDark,
-                            shape = RoundedCornerShape(20.dp)
+                            shape = RoundedCornerShape(30.dp)
                         ),
-                    painter = painterResource(id = R.drawable.baseline_edit_24),
+                    painter = painterResource(id = R.drawable.edit_3),
                     contentDescription = "edit",
                     tint = Blue
                 )
@@ -109,8 +108,8 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                     containerColor = Color.White
                 ),
                 modifier = Modifier
-                    .padding(10.dp),
-                shape = RoundedCornerShape(8.dp),
+                    .padding(8.dp),
+                shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
 
@@ -127,7 +126,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             )
 
                             Image(
-                                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
+                                painter = painterResource(id = R.drawable.play_button),
                                 contentDescription = "play",
                                 Modifier
                                     .size(50.dp)
@@ -137,7 +136,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                     }
 
                     // bottom text: name camera and below "is online" if image exist
-                    Row(modifier = Modifier.padding(16.dp)) {
+                    Row(modifier = Modifier.padding(18.dp)) {
                         Column {
                             Text(text = door.name, fontSize = 16.sp)
                             if (door.snapshot != "") {
@@ -151,7 +150,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             horizontalArrangement = Arrangement.End
                         ) {
                             Image(
-                                painter = painterResource(id = if (door.favorites) R.drawable.baseline_lock_open_24 else R.drawable.baseline_lock_24),
+                                painter = painterResource(id = if (door.favorites) R.drawable.lockoff else R.drawable.lockon),
                                 contentDescription = "lock",
                             )
                         }
