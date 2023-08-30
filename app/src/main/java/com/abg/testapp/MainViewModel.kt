@@ -22,18 +22,21 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     private val _cameras = MutableStateFlow<Resource<List<Camera>?>?>(null)
     val cameras: StateFlow<Resource<List<Camera>?>?> = _cameras
 
+    /* if in (DB) database Door is empty then connect to remote server and save to DB
+     * else get data from DB
+     */
     fun getDoors() = viewModelScope.launch {
         if (repository.checkIsEmptyDoorDB()) {
             _doors.value = Resource.Loading
-            _doors.value = repository.getDoorsFromRemote()
-            Log.d("connect", "getDoors: ")
+            _doors.value = repository.getDoorsFromRemote() // get data from remote server
+            Log.d("#connect", "getDoors")
             _doors.collectLatest { list ->
                 if (list is Resource.Success) {
-                    list.result?.let { repository.insertAllDoors(it) }
+                    list.result?.let { repository.insertAllDoors(it) } // insert to DB all list of Doors
                 }
             }
         } else {
-            Log.d("db", "getDoors: ")
+            Log.d("#db", "getDoors")
             _doors.value = Resource.Loading
             repository.getDoorsFromDB().collectLatest {
                 _doors.value = Resource.Success(it)
@@ -41,26 +44,27 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-    fun insertFavoriteDoor(door: Door) = viewModelScope.launch {
-        repository.insertOrUpdateFavoriteDoor(door)
+    // insert by id door
+    fun insertFavoriteDoor(id: Int) = viewModelScope.launch {
+        repository.insertOrUpdateFavoriteDoor(id)
     }
 
-    fun insertRenamedDoor(door: Door) = viewModelScope.launch {
-        repository.insertOrUpdateRenamedDoor(door)
+    fun insertRenamedDoor(id: Int, newName: String) = viewModelScope.launch {
+        repository.insertOrUpdateRenamedDoor(id, newName)
     }
 
     fun getCameras() = viewModelScope.launch {
         if (repository.checkIsEmptyCameraDB()) {
             _cameras.value = Resource.Loading
             _cameras.value = repository.getCamerasFromRemote()
-            Log.d("connect", "getCameras: ")
+            Log.d("#connect", "getCameras")
             _cameras.collectLatest { list ->
                 if (list is Resource.Success) {
                     list.result?.let { repository.insertAllCameras(it) }
                 }
             }
         } else {
-            Log.d("db", "getCameras: ")
+            Log.d("#db", "getCameras")
             _cameras.value = Resource.Loading
             repository.getCamerasFromDB().collectLatest {
                 _cameras.value = Resource.Success(it)
@@ -68,12 +72,12 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-    fun insertFavoriteCamera(camera: Camera) = viewModelScope.launch {
-        repository.insertOrUpdateFavoriteCamera(camera)
+    fun insertFavoriteCamera(id: Int) = viewModelScope.launch {
+        repository.insertOrUpdateFavoriteCamera(id)
     }
 
-    fun insertRenamedCamera(camera: Camera) = viewModelScope.launch {
-        repository.insertOrUpdateRenamedCamera(camera)
+    fun insertRenamedCamera(id: Int, newName: String) = viewModelScope.launch {
+        repository.insertOrUpdateRenamedCamera(id, newName)
     }
 
 }

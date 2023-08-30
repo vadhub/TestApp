@@ -8,7 +8,7 @@ import com.abg.testapp.model.Camera
 import com.abg.testapp.ui.theme.Beige
 
 @Composable
-fun CamerasList(cameras: List<Camera>, onClickFavorite: (Camera) -> Unit, onClickRenamed: (Camera) -> Unit) {
+fun CamerasList(cameras: List<Camera>, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
     LazyColumn(Modifier.background(color = Beige)) {
         items(cameras.size) {
             CameraItem(cameras[it], onClickFavorite, onClickRenamed)

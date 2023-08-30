@@ -8,12 +8,11 @@ import com.abg.testapp.model.Door
 import com.abg.testapp.ui.theme.Beige
 
 @Composable
-fun DoorsList(doors: List<Door>, onClickFavorite: (Door) -> Unit, onClickRenamed: (Door) -> Unit) {
-
-        LazyColumn(Modifier.background(color = Beige)) {
-            items(doors.size) {
-                DoorItem(doors[it], onClickFavorite, onClickRenamed)
-            }
+fun DoorsList(doors: List<Door>, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
+    LazyColumn(Modifier.background(color = Beige)) {
+        items(doors.size) {
+            DoorItem(doors[it], onClickFavorite, onClickRenamed)
         }
+    }
 
 }

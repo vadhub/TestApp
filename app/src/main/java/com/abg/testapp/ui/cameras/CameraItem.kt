@@ -18,6 +18,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abg.testapp.R
 import com.abg.testapp.model.Camera
+import com.abg.testapp.ui.Dialog
 import com.abg.testapp.ui.theme.Beige
 import com.abg.testapp.ui.theme.BeigeDark
 import com.abg.testapp.ui.theme.Blue
@@ -38,7 +41,16 @@ import de.charlex.compose.RevealSwipe
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun CameraItem(camera: Camera, onClickFavorite: (Camera) -> Unit, onClickRenamed: (Camera) -> Unit) {
+fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
+
+    val showDialog = remember { mutableStateOf(false) }
+
+    //use default icons
+    val drawableStar = if (camera.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+
+    Dialog(openDialog = showDialog, onConfirm = {
+        onClickRenamed.invoke(camera.id, it)
+    }, text = camera.name)
 
     RevealSwipe(
         maxRevealDp = 100.dp,
@@ -46,7 +58,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Camera) -> Unit, onClickRenamed
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
-            IconButton(onClick = { onClickRenamed.invoke(camera) }) {
+            IconButton(onClick = { showDialog.value = true }) {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
@@ -60,13 +72,13 @@ fun CameraItem(camera: Camera, onClickFavorite: (Camera) -> Unit, onClickRenamed
                     tint = Blue
                 )
             }
-            IconButton(onClick = { onClickFavorite.invoke(camera) }) {
+            IconButton(onClick = { onClickFavorite.invoke(camera.id) }) {
                 Icon(
                     modifier = Modifier
                         .padding(horizontal = 15.dp)
                         .size(30.dp)
                         .border(width = 0.5.dp, color = BeigeDark, shape = RoundedCornerShape(20.dp)),
-                    painter = painterResource(id = R.drawable.baseline_star_border_24),
+                    painter = painterResource(id = drawableStar),
                     contentDescription = "",
                     tint = Yellow
                 )
@@ -148,7 +160,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Camera) -> Unit, onClickRenamed
                 ) {
                     Image(
                         painter = painterResource(
-                            id = if (camera.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+                            id = drawableStar
                         ),
                         contentDescription = "",
                     )

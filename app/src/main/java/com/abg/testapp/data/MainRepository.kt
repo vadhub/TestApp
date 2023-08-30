@@ -26,7 +26,6 @@ class MainRepository(
         val list = realm.query<Door>().find()
 
         if (list.isEmpty()) {
-            Log.d("empty", "eeee")
             return true
         }
         return false
@@ -36,7 +35,6 @@ class MainRepository(
         val list = realm.query<Camera>().find()
 
         if (list.isEmpty()) {
-            Log.d("empty", "eeee")
             return true
         }
         return false
@@ -55,7 +53,7 @@ class MainRepository(
         }
     }
 
-    suspend fun getDoorsFromDB(): Flow<List<Door>> {
+    fun getDoorsFromDB(): Flow<List<Door>> {
         return realm.query<Door>().asFlow().map { it.list }
     }
 
@@ -67,20 +65,20 @@ class MainRepository(
 
     }
 
-    suspend fun insertOrUpdateFavoriteDoor(door: Door) {
+    suspend fun insertOrUpdateFavoriteDoor(id: Int) {
         realm.write {
-            val d = this.query<Door>("id == $0", door.id).first().find()
+            val d = this.query<Door>("id == $0", id).first().find()
             if (d != null) {
                 d.favorites= !d.favorites
             }
         }
     }
 
-    suspend fun insertOrUpdateRenamedDoor(door: Door) {
+    suspend fun insertOrUpdateRenamedDoor(id: Int, newName: String) {
         realm.write {
-            val d = this.query<Camera>("id == $0", door.id).first().find()
+            val d = this.query<Door>("id == $0", id).first().find()
             if (d != null) {
-                d.name = door.name
+                d.name = newName
             }
         }
     }
@@ -98,32 +96,30 @@ class MainRepository(
         }
     }
 
-    suspend fun getCamerasFromDB(): Flow<List<Camera>> {
+    fun getCamerasFromDB(): Flow<List<Camera>> {
         return realm.query<Camera>().asFlow().map { it.list }
     }
 
     suspend fun insertAllCameras(cameras: List<Camera>) {
         if (cameras.isNotEmpty()) {
-            Log.d("insert", cameras.toTypedArray().contentToString())
             cameras.forEach { realm.write { this.copyToRealm(it) } }
         }
     }
 
-    suspend fun insertOrUpdateFavoriteCamera(camera: Camera) {
-        Log.d("insert", camera.favorites.toString())
+    suspend fun insertOrUpdateFavoriteCamera(id: Int) {
         realm.write {
-            val cam = this.query<Camera>("id == $0", camera.id).first().find()
+            val cam = this.query<Camera>("id == $0",id).first().find()
             if (cam != null) {
                 cam.favorites= !cam.favorites
             }
         }
     }
 
-    suspend fun insertOrUpdateRenamedCamera(camera: Camera) {
+    suspend fun insertOrUpdateRenamedCamera(id: Int, newName: String) {
         realm.write {
-            val cam = this.query<Camera>("id == $0", camera.id).first().find()
+            val cam = this.query<Camera>("id == $0", id).first().find()
             if (cam != null) {
-                cam.name = camera.name
+                cam.name = newName
             }
         }
     }
