@@ -1,14 +1,11 @@
 package com.abg.testapp.model
 
-
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
+import io.realm.kotlin.types.RealmObject
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-open class Door : RealmObject() {
-    @PrimaryKey
+open class Door : RealmObject {
     @SerialName("id")
     var id: Int = 0
 
