@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
@@ -18,8 +19,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,10 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abg.testapp.R
 import com.abg.testapp.model.Camera
-import com.abg.testapp.ui.Dialog
 import com.abg.testapp.ui.theme.Beige
 import com.abg.testapp.ui.theme.BeigeDark
-import com.abg.testapp.ui.theme.Blue
 import com.abg.testapp.ui.theme.Yellow
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -44,25 +41,24 @@ import de.charlex.compose.RevealSwipe
 @Composable
 fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
 
-    //use default icons
-    val drawableStar = if (camera.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
-
     //RevealSwipe imported from dependency
     RevealSwipe(
-        maxRevealDp = 50.dp,
+        maxRevealDp = 60.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
 
             // button for choose favorite
-            IconButton(onClick = { onClickFavorite.invoke(camera.id) }) {
+            IconButton(
+                modifier = Modifier
+                    .padding(horizontal = 15.dp)
+                    .border(width = 0.5.dp, color = BeigeDark, shape = CircleShape),
+                onClick = { onClickFavorite.invoke(camera.id) }) {
                 Icon(
                     modifier = Modifier
-                        .padding(horizontal = 15.dp)
-                        .size(30.dp)
-                        .border(width = 0.5.dp, color = BeigeDark, shape = RoundedCornerShape(20.dp)),
-                    painter = painterResource(id = drawableStar),
+                        .size(30.dp),
+                    painter = painterResource(id = R.drawable.star_2),
                     contentDescription = "favorite",
                     tint = Yellow
                 )
@@ -80,7 +76,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
+                    .padding(8.dp,4.dp),
                 shape = RoundedCornerShape(8.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
@@ -97,7 +93,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
                             )
 
                             Image(
-                                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
+                                painter = painterResource(id = R.drawable.play_button),
                                 contentDescription = "play",
                                 Modifier
                                     .size(50.dp)
@@ -119,7 +115,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
                                 horizontalArrangement = Arrangement.End
                             ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.baseline_shield_24),
+                                    painter = painterResource(id = R.drawable.vector),
                                     contentDescription = "secure",
                                 )
                             }
@@ -140,22 +136,26 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit) {
                 if (camera.rec) {
                     Image(
                         painter = painterResource(
-                            id = R.drawable.baseline_videocam_24
+                            id = R.drawable.rec
                         ),
                         contentDescription = "rec",
                     )
                 }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Image(
-                        painter = painterResource(
-                            id = drawableStar
-                        ),
-                        contentDescription = "favorite",
-                    )
+
+                if (camera.favorites) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Image(
+                            painter = painterResource(
+                                id = R.drawable.star
+                            ),
+                            contentDescription = "favorite",
+                        )
+                    }
                 }
+
             }
         }
     }

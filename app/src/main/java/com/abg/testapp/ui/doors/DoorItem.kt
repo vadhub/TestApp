@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
@@ -46,7 +47,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
 
     val showDialog = remember { mutableStateOf(false) }
 
-    val drawableStar = if (door.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
+    val drawableStar = R.drawable.star_2
 
     // EditDialog class wrapper over AlertDialog
     Dialog(openDialog = showDialog, onConfirm = {
@@ -55,42 +56,32 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
 
     //RevealSwipe imported from dependency
     RevealSwipe(
-        maxRevealDp = 100.dp,
-        modifier = Modifier.padding(vertical = 5.dp),
+        maxRevealDp = 110.dp,
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
 
             // button for edit door name
-            IconButton(onClick = {
+            IconButton( modifier = Modifier
+                .border(width = 0.5.dp, color = BeigeDark, shape = CircleShape),
+                onClick = {
                 showDialog.value = true
             }) {
                 Icon(
-                    modifier = Modifier
-                        .size(30.dp)
-                        .border(
-                            width = 0.5.dp,
-                            color = BeigeDark,
-                            shape = RoundedCornerShape(20.dp)
-                        ),
-                    painter = painterResource(id = R.drawable.baseline_edit_24),
+                    painter = painterResource(id = R.drawable.edit_3),
                     contentDescription = "edit",
                     tint = Blue
                 )
             }
 
             // button for choose favorite
-            IconButton(onClick = { onClickFavorite.invoke(door.id) }) {
+            IconButton(
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .border(width = 0.5.dp, color = BeigeDark, shape = CircleShape),
+                onClick = { onClickFavorite.invoke(door.id) }) {
                 Icon(
-                    modifier = Modifier
-                        .padding(horizontal = 15.dp)
-                        .size(30.dp)
-                        .border(
-                            width = 0.5.dp,
-                            color = BeigeDark,
-                            shape = RoundedCornerShape(20.dp)
-                        ),
-                    painter = painterResource(id = drawableStar),
+                    painter = painterResource(id = R.drawable.star_2),
                     contentDescription = "favorite",
                     tint = Yellow
                 )
@@ -109,8 +100,8 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                     containerColor = Color.White
                 ),
                 modifier = Modifier
-                    .padding(10.dp),
-                shape = RoundedCornerShape(8.dp),
+                    .padding(8.dp,4.dp),
+                shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
 
@@ -127,7 +118,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             )
 
                             Image(
-                                painter = painterResource(id = R.drawable.baseline_play_circle_outline_24),
+                                painter = painterResource(id = R.drawable.play_button),
                                 contentDescription = "play",
                                 Modifier
                                     .size(50.dp)
@@ -137,11 +128,15 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                     }
 
                     // bottom text: name camera and below "is online" if image exist
-                    Row(modifier = Modifier.padding(16.dp)) {
+                    Row(modifier = Modifier.padding(18.dp)) {
                         Column {
                             Text(text = door.name, fontSize = 16.sp)
                             if (door.snapshot != "") {
-                                Text(text = stringResource(id = R.string.online), fontSize = 14.sp, color = Color.Gray)
+                                Text(
+                                    text = stringResource(id = R.string.online),
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
                             }
                         }
 
@@ -151,7 +146,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             horizontalArrangement = Arrangement.End
                         ) {
                             Image(
-                                painter = painterResource(id = if (door.favorites) R.drawable.baseline_lock_open_24 else R.drawable.baseline_lock_24),
+                                painter = painterResource(id = if (door.favorites) R.drawable.lockoff else R.drawable.lockon),
                                 contentDescription = "lock",
                             )
                         }
