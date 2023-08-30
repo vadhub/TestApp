@@ -35,10 +35,10 @@ Tested on devices:
   <table style="padding:10px">
   <tr>
     <td><img src="https://github.com/vadhub/TestApp/blob/master/shimmer.png?raw=true" alt="1" width = 500></td>
-    <td><img src="https://github.com/vadhub/TestApp/blob/master/cameras.png?raw=true" alt="2" width = 500></td>
-    <td><img src="https://github.com/vadhub/TestApp/blob/master/doors.png?raw=true" alt="3" width = 500></td>
-    <td><img src="https://github.com/vadhub/TestApp/blob/master/edit_cam.png?raw=true" alt="4" width = 500></td>
-    <td><img src="https://github.com/vadhub/TestApp/blob/master/door_redact.png?raw=true" alt="5" width = 500></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/cam1.png?raw=true" alt="2" width = 500></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/cam2.png?raw=true" alt="3" width = 500></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/door1.png?raw=true" alt="4" width = 500></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/door2.png?raw=true" alt="5" width = 500></td>
   </tr>
 </table>
   
