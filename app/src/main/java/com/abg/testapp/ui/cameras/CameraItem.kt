@@ -39,6 +39,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import de.charlex.compose.RevealDirection
 import de.charlex.compose.RevealSwipe
 
+
+// I think it's not very good to write everything in one function, but it's faster
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, String) -> Unit) {
@@ -52,12 +54,15 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
         onClickRenamed.invoke(camera.id, it)
     }, text = camera.name)
 
+    //RevealSwipe imported from dependency
     RevealSwipe(
         maxRevealDp = 100.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
+
+            // button for edit camera name
             IconButton(onClick = { showDialog.value = true }) {
                 Icon(
                     modifier = Modifier
@@ -72,6 +77,8 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                     tint = Blue
                 )
             }
+
+            // button for choose favorite
             IconButton(onClick = { onClickFavorite.invoke(camera.id) }) {
                 Icon(
                     modifier = Modifier
@@ -86,6 +93,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
         }
     ) {
 
+        // box show card with text and image
         Box {
 
             Card(
@@ -100,8 +108,8 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
 
+                // Column show image with icon player
                 Column {
-
                     if (camera.snapshot != "") {
                         Box(modifier = Modifier.height(200.dp)) {
 
@@ -120,6 +128,7 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
                             )
                         }
                     }
+                    // row show text with name camera shield icon
                     Row(
                         modifier = Modifier
                             .padding(16.dp)
@@ -142,6 +151,8 @@ fun CameraItem(camera: Camera, onClickFavorite: (Int) -> Unit, onClickRenamed: (
 
                 }
             }
+
+            // row show camera icon if rec is true and favorite star if favorite is true
             Row(
                 verticalAlignment = Alignment.Top,
                 modifier = Modifier

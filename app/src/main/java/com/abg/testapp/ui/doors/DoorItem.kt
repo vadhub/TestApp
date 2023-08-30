@@ -47,16 +47,20 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
 
     val drawableStar = if (door.favorites) R.drawable.baseline_star_24 else R.drawable.baseline_star_border_24
 
+    // EditDialog class wrapper over AlertDialog
     Dialog(openDialog = showDialog, onConfirm = {
         onClickRenamed.invoke(door.id, it)
     }, text = door.name)
 
+    //RevealSwipe imported from dependency
     RevealSwipe(
         maxRevealDp = 100.dp,
         modifier = Modifier.padding(vertical = 5.dp),
         backgroundCardEndColor = Beige,
         directions = setOf(RevealDirection.EndToStart),
         hiddenContentEnd = {
+
+            // button for edit door name
             IconButton(onClick = {
                 showDialog.value = true
             }) {
@@ -74,6 +78,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                 )
             }
 
+            // button for choose favorite
             IconButton(onClick = { onClickFavorite.invoke(door.id) }) {
                 Icon(
                     modifier = Modifier
@@ -91,13 +96,13 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
             }
         }
     ) {
+
+        // box show card with text and image
         Box(
             Modifier
                 .fillMaxWidth()
         ) {
-
             Card(
-
                 colors = CardDefaults.cardColors(
                     contentColor = Color.Black,
                     containerColor = Color.White
@@ -107,10 +112,13 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                 shape = RoundedCornerShape(8.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
+
+                // Column show image with icon player
                 Column {
                     if (door.snapshot != "") {
                         Box(modifier = Modifier.height(200.dp)) {
 
+                            //Glide from dependencies
                             GlideImage(
                                 model = door.snapshot,
                                 contentDescription = "camera ${door.name}",
@@ -126,6 +134,8 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             )
                         }
                     }
+
+                    // bottom text: name camera and below "is online" if image exist
                     Row(modifier = Modifier.padding(16.dp)) {
                         Column {
                             Text(text = door.name, fontSize = 16.sp)
@@ -134,6 +144,7 @@ fun DoorItem(door: Door, onClickFavorite: (Int) -> Unit, onClickRenamed: (Int, S
                             }
                         }
 
+                        // row show icon open/close lock depending on favorite or not
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.End
