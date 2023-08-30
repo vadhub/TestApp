@@ -26,4 +26,13 @@ Stack:
 - Jetpack Compose + Material Design (Jetpack Сompose обязательно, хорошо если xml знаете)
 
   ## result
+
+  <table style="padding:10px">
+  <tr>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/cameras.png?raw=true"  alt="1" width = 150px></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/doors.png?raw=true" align="right" alt="2" width = 150px></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/redact_cam_2.png?raw=true" align="right" alt="2" width = 150></td>
+    <td><img src="https://github.com/vadhub/TestApp/blob/master/door_redact.png?raw=true" align="right" alt="2" width = 150></td>
+  </tr>
+</table>
   
