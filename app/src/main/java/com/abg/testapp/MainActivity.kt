@@ -1,7 +1,6 @@
 package com.abg.testapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -54,17 +53,25 @@ class MainActivity : ComponentActivity() {
         }
 
         val editDoor: (Int, String) -> Unit = { id, newName ->
-            Log.d("edit", "$id $newName")
             viewModel.insertRenamedDoor(id, newName)
+        }
+
+        val onRefreshDoor: () -> Unit = {
+            viewModel.refreshDoors()
+        }
+
+        val onRefreshCamera: () -> Unit = {
+            viewModel.refreshCameras()
         }
 
         setContent {
             TestAppTheme {
+
                 Column(Modifier.background(Beige)) {
                     TopBar()
                     TabLayout(
-                        { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor) },
-                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera)})
+                        { DoorsScreen(doors = viewModel.doors.collectAsState(), favoriteDoor, editDoor, onRefreshDoor) },
+                        { CamerasScreen(cameras = viewModel.cameras.collectAsState(), favoriteCamera, editCamera, onRefreshCamera)})
                 }
             }
         }
