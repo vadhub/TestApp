@@ -1,5 +1,4 @@
 # TestApp
-Тестовое задание (Android Developer)
 
 Дизайн макет: 
 https://www.figma.com/file/zzhf0xOS7FP6jWK2Tqb1Gy/internship?node-id=0%3A1&t=cXpylF8FuatqK0pR-1
@@ -23,7 +22,7 @@ Stack:
 - Ktor
 - Coroutines
 - LiveData
-- Jetpack Compose + Material Design (Jetpack Сompose обязательно, хорошо если xml знаете)
+- Jetpack Compose + Material Design
 
   ## result
 
